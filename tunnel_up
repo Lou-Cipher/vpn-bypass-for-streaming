@@ -1,7 +1,7 @@
 #!/bin/bash
 _gateway=$(ip route | awk '/default/ { print $3 }')
 
-curl -sko /tmp/vpn_bypass.txt https://lou.h4ck.me/vpn_bypass.txt
+curl -sko /tmp/vpn_bypass.txt 'https://lou.h4ck.me/vpn_bypass.txt'
 
 for _cidr in `cat /tmp/vpn_bypass.txt` ; do 
 	ip r add $_cidr via $_gateway > /dev/null 2>&1 
