@@ -1,16 +1,10 @@
 #!/bin/bash
 _gateway=$(ip route | awk '/default/ { print $3 }')
 
-# Prime
-wget https://ip-ranges.amazonaws.com/ip-ranges.json -O /tmp/aws.json
-for _cidr in `jq -r '.prefixes | .[].ip_prefix' < /tmp/aws.json` ; do
-	ip r add $_cidr via $_gateway dev eth0 > /dev/null 2>&1
-done 
+curl -sko /tmp/vpn_bypass.txt https://lou.h4ck.me/vpn_bypass.txt
 
-# Netflix 
-wget 'https://github.ioiox.com/GitHub/ios_rule_script/raw/commit/513941755300a0c6a1c3c7a2702859dc1ad5c0e8/rule/Shadowrocket/Netflix/Netflix_Resolve.list' -O /tmp/netflix.list
-for _cidr in `cat /tmp/netflix.list |grep IP-CI |awk -F ',' '{print $2}'` ; do 
-	ip r add $_cidr via $_gateway dev eth0 > /dev/null 2>&1 
+for _cidr in `cat /tmp/vpn_bypass.txt` ; do 
+	ip r add $_cidr via $_gateway > /dev/null 2>&1 
 done
 
 exit 0
